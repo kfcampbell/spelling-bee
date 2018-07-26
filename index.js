@@ -40,7 +40,6 @@ const SpellWordRequestHandler = {
       handlerInput.responseBuilder
         .speak(speechText)
         .reprompt(speechText)
-        //.withSimpleCard('Hello World', speechText)
         .getResponse()
     );
   }
@@ -83,7 +82,6 @@ const LaunchRequestHandler = {
     return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
   },
   handle(handlerInput) {
-    //const speechText = 'Welcome to the Alexa Skills Kit, you can say hello!';
     const speechText = `Your current word is ${
       currWord.word
     }. To spell it, say: spell word, followed by the spelling of the word.`;
@@ -92,7 +90,6 @@ const LaunchRequestHandler = {
       handlerInput.responseBuilder
         .speak(speechText)
         .reprompt(speechText)
-        //.withSimpleCard('Hello World', speechText)
         .getResponse()
     );
   }
@@ -132,7 +129,6 @@ const CancelAndStopIntentHandler = {
     return (
       handlerInput.responseBuilder
         .speak(speechText)
-        //.withSimpleCard('Hello World', speechText)
         .getResponse()
     );
   }
@@ -151,7 +147,6 @@ const HelpIntentHandler = {
       handlerInput.responseBuilder
         .speak(speechText)
         .reprompt(speechText)
-        //.withSimpleCard('Hello World', speechText)
         .getResponse()
     );
   }
@@ -182,6 +177,5 @@ exports.handler = Alexa.SkillBuilders.custom()
     CancelAndStopIntentHandler,
     SampleRequestHandler
   )
-  //.addRequestInterceptors(LocalizationInterceptor)
   .addErrorHandlers(ErrorHandler)
   .lambda();
