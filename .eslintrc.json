@@ -1,0 +1,39 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "env": {
+    "node": true
+  },
+  "extends": ["airbnb-base", "prettier"],
+  "globals": {
+    "action": true,
+    "afterEach": true,
+    "beforeEach": true,
+    "describe": true,
+    "document": true,
+    "expect": true,
+    "fetch": true,
+    "FormData": true,
+    "it": true,
+    "jest": true,
+    "location": true,
+    "URLSearchParams": true,
+    "window": true,
+    "Headers": true
+  },
+  "plugins": [],
+  "rules": {
+    "no-console": "off",
+    "react/forbid-prop-types": "off",
+    "no-underscore-dangle": "off",
+    "comma-dangle": [
+      "error",
+      {
+        "functions": "never"
+      }
+    ],
+    "linebreak-style": 0
+  }
+}
