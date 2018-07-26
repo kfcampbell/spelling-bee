@@ -2,7 +2,7 @@ const words = [
     {
         word: 'mastodon',
         etymology: 'Mastodon was coined by French naturalisty Georges Cuvier, from Ancient Greek mastos, meaning breast, and odous, meaning tooth.',
-        sentence: 'Studies of mastodon teeth microwear patterns indicate that mastodons could adjust their diet according to the ecosystem.'
+        sentence: 'Studies of mastodon teeth microwear patterns indicate that mastodons could adjust their diet according to their ecosystem.'
     },
     {
         word: 'raptor',

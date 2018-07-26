@@ -24,9 +24,14 @@ const SpellWordRequestHandler = {
     if (handlerInput.requestEnvelope.request.intent.slots.letter.value) {
       let spelling = handlerInput.requestEnvelope.request.intent.slots.letter.value;
       const isCorrectSpelling = spelling.toLowerCase() === currWord.word;
-      speechText = isCorrectSpelling
-        ? 'You got it! Congratulations!'
-        : 'Wow you really suck at this.';
+
+      if (isCorrectSpelling) {
+        currWord = getRandomWord();
+        speechText = `You got it! Congratulations. Your new word is ${currWord.word}`;
+      } else {
+        speechText =
+          "Wow you really suck at this. If you think it might help your terrible spelling, you can say: use it in a sentence, or what's the word's etymology?";
+      }
     } else {
       speechText = 'Uhh...did you even spell anything?';
     }
