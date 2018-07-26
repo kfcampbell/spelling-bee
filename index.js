@@ -2,23 +2,31 @@ require('babel-polyfill');
 
 const Alexa = require('ask-sdk-core');
 
-const words = ['mastodon', 'allosaurus', 'raptor'];
-let currWord = words[0];
+const { words } = require('./words');
+
+const getRandomWord = () => {
+  return words[Math.floor(Math.random() * Math.floor(words.length))];
+};
+
+let currWord = getRandomWord();
 
 /* INTENT HANDLERS */
 const SpellWordRequestHandler = {
   canHandle(handlerInput) {
-    return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-      && handlerInput.requestEnvelope.request.intent.name === 'spell_word_intent';
+    return (
+      handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+      handlerInput.requestEnvelope.request.intent.name === 'spell_word_intent'
+    );
   },
   handle(handlerInput) {
-    console.log('inside spell word request', JSON.stringify(handlerInput));
     let speechText = 'Uh oh. Keegan messed something up';
 
-    if(handlerInput.requestEnvelope.request.intent.slots.letter.value) {
+    if (handlerInput.requestEnvelope.request.intent.slots.letter.value) {
       let spelling = handlerInput.requestEnvelope.request.intent.slots.letter.value;
-      const isCorrectSpelling = spelling.toLowerCase() === currWord;
-      speechText = isCorrectSpelling ? 'You got it! Congratulations!' : 'Wow you really suck at this.';
+      const isCorrectSpelling = spelling.toLowerCase() === currWord.word;
+      speechText = isCorrectSpelling
+        ? 'You got it! Congratulations!'
+        : 'Wow you really suck at this.';
     } else {
       speechText = 'Uhh...did you even spell anything?';
     }
@@ -33,6 +41,37 @@ const SpellWordRequestHandler = {
   }
 };
 
+const EtymologyRequestHandler = {
+  canHandle(handlerInput) {
+    return (
+      handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+      handlerInput.requestEnvelope.request.intent.name === 'etymology_intent'
+    );
+  },
+  handle(handlerInput) {
+    const speechText = currWord.etymology;
+    return handlerInput.responseBuilder
+      .speak(speechText)
+      .reprompt(speechText)
+      .getResponse();
+  }
+};
+
+const SentenceRequestHandler = {
+  canHandle(handlerInput) {
+    return (
+      handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+      handlerInput.requestEnvelope.request.intent.name === 'use_in_sentence_intent'
+    );
+  },
+  handle(handlerInput) {
+    const speechText = currWord.sentence;
+    return handlerInput.responseBuilder
+      .speak(speechText)
+      .reprompt(speechText)
+      .getResponse();
+  }
+};
 
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
@@ -40,7 +79,9 @@ const LaunchRequestHandler = {
   },
   handle(handlerInput) {
     //const speechText = 'Welcome to the Alexa Skills Kit, you can say hello!';
-    const speechText = `Your current word is ${currWord}. To spell it, say: spell word, followed by the spelling of the word.`;
+    const speechText = `Your current word is ${
+      currWord.word
+    }. To spell it, say: spell word, followed by the spelling of the word.`;
 
     return (
       handlerInput.responseBuilder
@@ -130,6 +171,8 @@ exports.handler = Alexa.SkillBuilders.custom()
   .addRequestHandlers(
     LaunchRequestHandler,
     SpellWordRequestHandler,
+    SentenceRequestHandler,
+    EtymologyRequestHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,
     SampleRequestHandler
